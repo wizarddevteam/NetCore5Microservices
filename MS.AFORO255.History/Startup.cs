@@ -1,8 +1,13 @@
+using Aforo255.Cross.Event.Src;
+using Aforo255.Cross.Event.Src.Bus;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MS.AFORO255.Deposit.Messages.Events;
+using MS.AFORO255.History.Messages.EventHandlers;
 using MS.AFORO255.History.Repositories;
 using MS.AFORO255.History.Services;
 
@@ -31,6 +36,13 @@ namespace MS.AFORO255.History
             services.AddScoped<IHistoryService, HistoryService>();
             services.AddScoped<IMongoBookDBContext, MongoBookDBContext>();
 
+            /*Start - RabbitMQ*/
+            services.AddMediatR(typeof(Startup));
+            services.AddRabbitMQ();
+
+            services.AddTransient<TransactionEventHandler>();
+            services.AddTransient<IEventHandler<TransactionCreatedEvent>, TransactionEventHandler>();
+            /*End - RabbitMQ*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +61,13 @@ namespace MS.AFORO255.History
             {
                 endpoints.MapControllers();
             });
+            ConfigureEventBus(app);
+        }
+
+        private void ConfigureEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<TransactionCreatedEvent, TransactionEventHandler>();
         }
     }
 }

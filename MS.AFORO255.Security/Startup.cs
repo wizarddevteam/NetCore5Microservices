@@ -23,7 +23,6 @@ namespace MS.AFORO255.Security
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-
             services.AddDbContext<ContextDatabase>(
                opt =>
                {
