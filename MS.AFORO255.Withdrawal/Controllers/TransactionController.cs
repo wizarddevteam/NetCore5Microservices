@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aforo255.Cross.Event.Src.Bus;
+using Microsoft.AspNetCore.Mvc;
 using MS.AFORO255.Withdrawal.DTOs;
+using MS.AFORO255.Withdrawal.Messages.Commands;
 using MS.AFORO255.Withdrawal.Services;
 using System;
 
@@ -10,9 +12,11 @@ namespace MS.AFORO255.Withdrawal.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
-        public TransactionController( ITransactionService transactionService)
+        private readonly IEventBus _bus;
+        public TransactionController( ITransactionService transactionService, IEventBus bus)
         {
             _transactionService = transactionService;
+            _bus = bus;
         }
 
         [HttpPost("Withdrawal")]
@@ -26,6 +30,25 @@ namespace MS.AFORO255.Withdrawal.Controllers
                 Type = "Withdrawal"
             };
             transaction = _transactionService.Withdrawal(transaction);
+
+            var withdrawalCreateCommand = new WithdrawalCreateCommand(
+               idTransaction: transaction.Id,
+               amount: transaction.Amount,
+               type: transaction.Type,
+               creationDate: transaction.CreationDate,
+               accountId: transaction.AccountId
+            );
+            _bus.SendCommand(withdrawalCreateCommand);
+
+            var notificationWithdrawalCreateCommand = new NotificationWithdrawalCreateCommand(
+               idTransaction: transaction.Id,
+               amount: transaction.Amount,
+               type: transaction.Type,
+               messageBody: "Retiro enviado",
+               address: "j.maradiaga@hotmail.com",
+               accountId: transaction.AccountId
+            );
+            _bus.SendCommand(notificationWithdrawalCreateCommand);
 
             return Ok(transaction);
         }

@@ -40,6 +40,9 @@ namespace MS.AFORO255.Notification
 
             services.AddTransient<NotificationEventHandler>();
             services.AddTransient<IEventHandler<NotificationCreatedEvent>, NotificationEventHandler>();
+
+            services.AddTransient<NotificationWithdrawalEventHandler>();
+            services.AddTransient<IEventHandler<NotificationWithdrawalCreatedEvent>, NotificationWithdrawalEventHandler>();
             /*End - RabbitMQ*/
         }
 
@@ -62,12 +65,19 @@ namespace MS.AFORO255.Notification
                 endpoints.MapControllers();
             });
             ConfigureEventBus(app);
+            ConfigureWithdrawalEventBus(app);
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<NotificationCreatedEvent, NotificationEventHandler>();
+        }
+
+        private void ConfigureWithdrawalEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<NotificationWithdrawalCreatedEvent, NotificationWithdrawalEventHandler>();
         }
     }
 }

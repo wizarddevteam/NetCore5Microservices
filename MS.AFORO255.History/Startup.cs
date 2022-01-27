@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MS.AFORO255.Deposit.Messages.Events;
 using MS.AFORO255.History.Messages.EventHandlers;
+using MS.AFORO255.History.Messages.Events;
 using MS.AFORO255.History.Repositories;
 using MS.AFORO255.History.Services;
 
@@ -42,6 +43,9 @@ namespace MS.AFORO255.History
 
             services.AddTransient<TransactionEventHandler>();
             services.AddTransient<IEventHandler<TransactionCreatedEvent>, TransactionEventHandler>();
+
+            services.AddTransient<WithdrawalEventHandler>();
+            services.AddTransient<IEventHandler<WithdrawalCreatedEvent>, WithdrawalEventHandler>();
             /*End - RabbitMQ*/
         }
 
@@ -62,12 +66,18 @@ namespace MS.AFORO255.History
                 endpoints.MapControllers();
             });
             ConfigureEventBus(app);
+            ConfigureEventBusWithdrawal(app);
         }
 
         private void ConfigureEventBus(IApplicationBuilder app)
         {
             var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
             eventBus.Subscribe<TransactionCreatedEvent, TransactionEventHandler>();
+        }
+        private void ConfigureEventBusWithdrawal(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<WithdrawalCreatedEvent, WithdrawalEventHandler>();
         }
     }
 }
