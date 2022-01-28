@@ -13,10 +13,12 @@ namespace MS.AFORO255.Withdrawal.Controllers
     {
         private readonly ITransactionService _transactionService;
         private readonly IEventBus _bus;
-        public TransactionController( ITransactionService transactionService, IEventBus bus)
+        private readonly IAccountService _accountService;
+        public TransactionController( ITransactionService transactionService, IEventBus bus, IAccountService accountService)
         {
             _transactionService = transactionService;
             _bus = bus;
+            _accountService = accountService;
         }
 
         [HttpPost("Withdrawal")]
@@ -31,26 +33,31 @@ namespace MS.AFORO255.Withdrawal.Controllers
             };
             transaction = _transactionService.Withdrawal(transaction);
 
-            var withdrawalCreateCommand = new WithdrawalCreateCommand(
-               idTransaction: transaction.Id,
-               amount: transaction.Amount,
-               type: transaction.Type,
-               creationDate: transaction.CreationDate,
-               accountId: transaction.AccountId
-            );
-            _bus.SendCommand(withdrawalCreateCommand);
+            bool isProccess = _accountService.Execute(transaction);
+            if (isProccess)
+            {
+                var withdrawalCreateCommand = new WithdrawalCreateCommand(
+                   idTransaction: transaction.Id,
+                   amount: transaction.Amount,
+                   type: transaction.Type,
+                   creationDate: transaction.CreationDate,
+                   accountId: transaction.AccountId
+                );
+                _bus.SendCommand(withdrawalCreateCommand);
 
-            var notificationWithdrawalCreateCommand = new NotificationWithdrawalCreateCommand(
-               idTransaction: transaction.Id,
-               amount: transaction.Amount,
-               type: transaction.Type,
-               messageBody: "Retiro enviado",
-               address: "j.maradiaga@hotmail.com",
-               accountId: transaction.AccountId
-            );
-            _bus.SendCommand(notificationWithdrawalCreateCommand);
+                var notificationWithdrawalCreateCommand = new NotificationWithdrawalCreateCommand(
+                   idTransaction: transaction.Id,
+                   amount: transaction.Amount,
+                   type: transaction.Type,
+                   messageBody: "Retiro enviado",
+                   address: "j.maradiaga@hotmail.com",
+                   accountId: transaction.AccountId
+                );
+                _bus.SendCommand(notificationWithdrawalCreateCommand);
 
-            return Ok(transaction);
+                return Ok(transaction);
+            }
+            return BadRequest(new { status = "Failed" });
         }
     }
 }

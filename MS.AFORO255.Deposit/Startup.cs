@@ -1,4 +1,5 @@
 using Aforo255.Cross.Event.Src;
+using Aforo255.Cross.Http.Src;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,12 +36,14 @@ namespace MS.AFORO255.Deposit
                   options.UseNpgsql(Configuration["postgres:cn"]);
               });
             services.AddScoped<ITransactionService, TransactionService>();
-
+            services.AddScoped<IAccountService, AccountService>();
             /*Start RabbitMQ*/
             services.AddMediatR(typeof(Startup).GetTypeInfo().Assembly);
             services.AddRabbitMQ();
             services.AddTransient<IRequestHandler<TransactionCreateCommand, bool>, TransactionCommandHandler>();
             /*End RabbitMQ*/
+
+            services.AddProxyHttp();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
