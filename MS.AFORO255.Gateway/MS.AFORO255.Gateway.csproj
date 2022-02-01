@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aforo255.Cross.Token" Version="4.0.0" />
     <PackageReference Include="Ocelot" Version="17.0.1" />
   </ItemGroup>
 

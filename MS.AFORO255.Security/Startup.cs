@@ -1,6 +1,10 @@
+using Aforo255.Cross.Discovery.Consul;
+using Aforo255.Cross.Discovery.Mvc;
 using Aforo255.Cross.Token.Src;
+using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,10 +35,17 @@ namespace MS.AFORO255.Security
             services.AddScoped<IAccessService, AccessService>();
 
             services.Configure<JwtOptions>(Configuration.GetSection("jwt"));
+
+            /*Start - Consul*/
+            services.AddSingleton<IServiceId, ServiceId>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddConsul();
+            /*End - Consul*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            IHostApplicationLifetime applicationLifetime, IConsulClient consulClient)
         {
             if (env.IsDevelopment())
             {
@@ -48,6 +59,12 @@ namespace MS.AFORO255.Security
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            var serviceId = app.UseConsul();
+            applicationLifetime.ApplicationStopped.Register(() =>
+            {
+                consulClient.Agent.ServiceDeregister(serviceId);
             });
         }
     }
