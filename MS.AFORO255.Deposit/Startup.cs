@@ -1,4 +1,5 @@
 using Aforo255.Cross.Discovery.Consul;
+using Aforo255.Cross.Discovery.Fabio;
 using Aforo255.Cross.Discovery.Mvc;
 using Aforo255.Cross.Event.Src;
 using Aforo255.Cross.Http.Src;
@@ -54,6 +55,8 @@ namespace MS.AFORO255.Deposit
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddConsul();
             /*End - Consul*/
+
+            services.AddFabio();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
