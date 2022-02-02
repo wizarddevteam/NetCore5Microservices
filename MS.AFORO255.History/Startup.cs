@@ -36,7 +36,7 @@ namespace MS.AFORO255.History
 
             services.Configure<Mongosettings>(opt =>
             {
-                opt.Connection = Configuration.GetSection("mongo:cn").Value;
+                opt.Connection = Configuration.GetSection("cn:mongo").Value;
                 opt.DatabaseName = Configuration.GetSection("mongo:database").Value;
             });
             services.AddScoped<IHistoryService, HistoryService>();

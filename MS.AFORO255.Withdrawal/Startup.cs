@@ -38,7 +38,7 @@ namespace MS.AFORO255.Withdrawal
             services.AddDbContext<ContextDatabase>(
               options =>
               {
-                  options.UseNpgsql(Configuration["postgres:cn"]);
+                  options.UseNpgsql(Configuration["cn:postgres"]);
               });
             services.AddScoped<ITransactionService, TransactionService>();
             services.AddScoped<IAccountService, AccountService>();

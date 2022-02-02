@@ -67,7 +67,7 @@
         "DownstreamHostAndPorts": [
           {
             "Host": "localhost",
-            "Port": 5005
+            "Port": 9999
           }
         ],
         "UpstreamPathTemplate": "/api/history/{accountId}",

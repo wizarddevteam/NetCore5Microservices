@@ -9,6 +9,7 @@
     <PackageReference Include="Aforo255.Cross.Event" Version="1.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.11.5" />
+    <PackageReference Include="nacos-sdk-csharp.Extensions.Configuration" Version="1.1.0" />
   </ItemGroup>
 
 </Project>

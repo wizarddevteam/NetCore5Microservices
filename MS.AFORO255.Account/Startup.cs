@@ -32,7 +32,7 @@ namespace MS.AFORO255.Account
             services.AddDbContext<ContextDatabase>(
               options =>
               {
-                  options.UseSqlServer(Configuration["sql:cn"]);
+                  options.UseSqlServer(Configuration["cn:sql"]);
               });
 
             services.AddScoped<IAccountService, AccountService>();

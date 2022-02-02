@@ -31,7 +31,7 @@ namespace MS.AFORO255.Security
             services.AddDbContext<ContextDatabase>(
                opt =>
                {
-                   opt.UseMySQL(Configuration["mysql:cn"]);
+                   opt.UseMySQL(Configuration["cn:mysql"]);
                });
             services.AddScoped<IAccessService, AccessService>();
 

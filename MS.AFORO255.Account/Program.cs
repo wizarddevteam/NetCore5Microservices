@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,12 @@ namespace MS.AFORO255.Account
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureAppConfiguration((context, builder) =>
+                    {
+                        var c = builder.Build();
+                        builder.AddNacosConfiguration(c.GetSection("nacosConfig"));
+                    });
+
                     webBuilder.UseStartup<Startup>();
                 });
     }
