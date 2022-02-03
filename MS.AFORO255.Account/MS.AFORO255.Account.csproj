@@ -6,8 +6,10 @@
 
   <ItemGroup>
     <PackageReference Include="Aforo255.Cross.Discovery" Version="3.0.0" />
+    <PackageReference Include="Aforo255.Cross.Tracing" Version="2.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.1" />
     <PackageReference Include="nacos-sdk-csharp.Extensions.Configuration" Version="1.1.0" />
+    <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.8.0" />
   </ItemGroup>
 
 </Project>

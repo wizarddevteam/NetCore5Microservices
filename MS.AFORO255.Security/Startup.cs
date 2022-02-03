@@ -2,6 +2,7 @@ using Aforo255.Cross.Discovery.Consul;
 using Aforo255.Cross.Discovery.Fabio;
 using Aforo255.Cross.Discovery.Mvc;
 using Aforo255.Cross.Token.Src;
+using Aforo255.Cross.Tracing.Src;
 using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,11 @@ namespace MS.AFORO255.Security
             /*End - Consul*/
 
             services.AddFabio();
+
+            /*Start - Tracer distributed*/
+            services.AddJaeger();
+            services.AddOpenTracing();
+            /*End - Tracer distributed*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

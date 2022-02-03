@@ -1,5 +1,6 @@
 using Aforo255.Cross.Event.Src;
 using Aforo255.Cross.Event.Src.Bus;
+using Aforo255.Cross.Tracing.Src;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,11 @@ namespace MS.AFORO255.Notification
             services.AddTransient<NotificationWithdrawalEventHandler>();
             services.AddTransient<IEventHandler<NotificationWithdrawalCreatedEvent>, NotificationWithdrawalEventHandler>();
             /*End - RabbitMQ*/
+
+            /*Start - Tracer distributed*/
+            services.AddJaeger();
+            services.AddOpenTracing();
+            /*End - Tracer distributed*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
