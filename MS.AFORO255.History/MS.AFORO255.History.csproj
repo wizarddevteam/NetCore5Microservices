@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aforo255.Cross.Cache" Version="1.0.0" />
     <PackageReference Include="Aforo255.Cross.Discovery" Version="3.0.0" />
     <PackageReference Include="Aforo255.Cross.Event" Version="1.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />

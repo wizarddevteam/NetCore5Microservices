@@ -1,3 +1,4 @@
+using Aforo255.Cross.Cache.Src;
 using Aforo255.Cross.Discovery.Consul;
 using Aforo255.Cross.Discovery.Fabio;
 using Aforo255.Cross.Discovery.Mvc;
@@ -60,6 +61,9 @@ namespace MS.AFORO255.History
             /*End - Consul*/
 
             services.AddFabio();
+
+            services.AddRedis();
+            services.AddSingleton<IExtensionCache, ExtensionCache>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
