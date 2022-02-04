@@ -6,7 +6,9 @@
 
   <ItemGroup>
     <PackageReference Include="Aforo255.Cross.Token" Version="4.0.0" />
+    <PackageReference Include="Aforo255.Cross.Tracing" Version="2.0.0" />
     <PackageReference Include="Ocelot" Version="17.0.1" />
+    <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.8.0" />
   </ItemGroup>
 
 </Project>

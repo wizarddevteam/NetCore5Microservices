@@ -1,3 +1,4 @@
+using Aforo255.Cross.Metric.Metrics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,7 @@ namespace MS.AFORO255.Account
                     });
 
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseAppMetrics();
                 });
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Aforo255.Cross.Metric.Registry;
+using Microsoft.AspNetCore.Mvc;
 using MS.AFORO255.Account.DTOs;
 using MS.AFORO255.Account.Service;
 using System.Linq;
@@ -10,15 +11,18 @@ namespace MS.AFORO255.Account.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
+        private readonly IMetricsRegistry _metricsRegistry;
 
-        public AccountController(IAccountService accountService)
+        public AccountController(IAccountService accountService, IMetricsRegistry metricsRegistry)
         {
             _accountService = accountService;
+            _metricsRegistry = metricsRegistry;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
+            _metricsRegistry.IncrementFindQuery();
             return Ok(_accountService.GetAll());
         }
 

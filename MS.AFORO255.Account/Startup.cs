@@ -1,6 +1,7 @@
 using Aforo255.Cross.Discovery.Consul;
 using Aforo255.Cross.Discovery.Fabio;
 using Aforo255.Cross.Discovery.Mvc;
+using Aforo255.Cross.Metric.Registry;
 using Consul;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -44,6 +45,8 @@ namespace MS.AFORO255.Account
             /*End - Consul*/
 
             services.AddFabio();
+
+            services.AddTransient<IMetricsRegistry, MetricsRegistry>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
