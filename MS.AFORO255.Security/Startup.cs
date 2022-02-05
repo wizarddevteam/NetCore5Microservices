@@ -1,6 +1,7 @@
 using Aforo255.Cross.Discovery.Consul;
 using Aforo255.Cross.Discovery.Fabio;
 using Aforo255.Cross.Discovery.Mvc;
+using Aforo255.Cross.Log.Src;
 using Aforo255.Cross.Token.Src;
 using Aforo255.Cross.Tracing.Src;
 using Consul;
@@ -75,6 +76,8 @@ namespace MS.AFORO255.Security
             {
                 consulClient.Agent.ServiceDeregister(serviceId);
             });
+
+            app.UseLogSeq();
         }
     }
 }
